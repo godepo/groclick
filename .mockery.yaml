@@ -1,0 +1,35 @@
+all: True
+dir: ./
+structname: "Mock{{.InterfaceName}}"
+filename: "mock_{{.InterfaceName}}_test.go"
+force-file-write: true
+pkgname: groclick
+packages:
+  github.com/spf13/afero:
+    config:
+      all: False
+    interfaces:
+      Fs:
+        config:
+      File:
+        config:
+  github.com/godepo/groclick:
+    config:
+      all: False
+    interfaces:
+      DB:
+        config:
+      ClickhouseContainer:
+        config:
+  github.com/ClickHouse/clickhouse-go/v2/lib/driver:
+    config:
+      all: False
+    interfaces:
+      Conn:
+        config:
+  io/fs:
+    config:
+      all: False
+    interfaces:
+      FileInfo:
+        config:
