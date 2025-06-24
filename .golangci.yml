@@ -25,6 +25,8 @@ linters:
         - fh
         - fs
         - to
+        - i
+        - j
   exclusions:
     generated: lax
     presets:

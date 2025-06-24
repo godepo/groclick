@@ -39,7 +39,13 @@ func TestHostedClickhouse(t *testing.T) {
 			t.Setenv("GROAT_I9N_CH_DSN",
 				uuid.NewString())
 
-			res, err := New[Deps]()(t.Context())
+			res, err := New[Deps](
+				WithMigrator(
+					func(ctx context.Context, migratorConfig MigratorConfig) error {
+						return nil
+					},
+				),
+			)(t.Context())
 
 			require.ErrorIs(t, ErrRequireNamespacePrefixForHostedDB, err)
 			require.Nil(t, res)

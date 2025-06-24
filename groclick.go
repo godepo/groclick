@@ -96,6 +96,12 @@ func WithPassword(password string) Option {
 	}
 }
 
+func WithMigrator(migrator Migrator) Option {
+	return func(c *config) {
+		c.migrator = migrator
+	}
+}
+
 func WithMigrationsPath(path string) Option {
 	return func(c *config) {
 		c.migrationsPath = path
