@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
+	"strings"
 
 	"github.com/spf13/afero"
 )
@@ -42,9 +43,21 @@ func PlainMigrator(fs afero.Fs, path string) (Migrator, error) {
 	}
 
 	return func(ctx context.Context, cfg MigratorConfig) error {
-		for _, migration := range migrations {
-			if err := cfg.DB.Exec(ctx, migration); err != nil {
-				return fmt.Errorf("can't execute migration %s: %w", migration, err)
+		for i, migration := range migrations {
+			for j, cmd := range strings.Split(migration, ";") {
+				cmd = strings.TrimSpace(cmd)
+				if cmd == "" {
+					continue
+				}
+
+				if err := cfg.DB.Exec(ctx, cmd); err != nil {
+					return fmt.Errorf(
+						"can't execute migration num=%d and command=%d %s: %w",
+						i, j,
+						cmd,
+						err,
+					)
+				}
 			}
 		}
 
