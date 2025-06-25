@@ -70,6 +70,7 @@ func (c *Container[T]) Injector(t *testing.T, to T) T {
 	require.NoError(t, con.Ping(c.ctx))
 
 	err = c.migrator(c.ctx, MigratorConfig{
+		Config:   cfg,
 		DB:       con,
 		DBName:   cfg.Auth.Database,
 		Path:     c.migrationsPath,

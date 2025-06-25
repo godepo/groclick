@@ -71,6 +71,7 @@ type (
 		DB       DB
 		UserName string
 		Password string
+		Config   *clickConn.Options
 	}
 
 	Migrator func(ctx context.Context, migratorConfig MigratorConfig) error

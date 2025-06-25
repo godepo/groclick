@@ -92,6 +92,7 @@ func (c *hostedClickhouse[T]) Injector(t *testing.T, to T) T {
 	require.NoError(t, con.Ping(c.ctx))
 
 	err = c.cfg.migrator(c.ctx, MigratorConfig{
+		Config:   cfg,
 		DB:       con,
 		DBName:   cfg.Auth.Database,
 		Path:     c.cfg.migrationsPath,
