@@ -4,6 +4,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/godepo/groat"
 	"github.com/godepo/groat/integration"
 )
@@ -15,7 +16,8 @@ type (
 	State struct {
 	}
 	Deps struct {
-		Conn *Connect `groat:"grohouse"`
+		Conn *Connect            `groat:"grohouse"`
+		Cfg  *clickhouse.Options `groat:"grocfg"`
 	}
 )
 
@@ -38,6 +40,7 @@ func TestMain(m *testing.M) {
 			WithContainerImage("clickhouse/clickhouse-server:23.3.8.21-alpine"),
 			WithUsername("default"),
 			WithPassword("test"),
+			WithInjectLabelForConfig("grocfg"),
 		),
 	)
 	os.Exit(suite.Go())
