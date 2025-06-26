@@ -35,30 +35,32 @@ type (
 	) (ClickhouseContainer, error)
 
 	Container[T any] struct {
-		forks           *atomic.Int32
-		click           ClickhouseContainer
-		ctx             context.Context
-		migrator        Migrator
-		migrationsPath  string
-		connString      string
-		injectLabel     string
-		opts            *clickConn.Options
-		root            driver.Conn
-		connConstructor func(opt *clickConn.Options) (driver.Conn, error)
+		forks                *atomic.Int32
+		click                ClickhouseContainer
+		ctx                  context.Context
+		migrator             Migrator
+		migrationsPath       string
+		connString           string
+		injectLabel          string
+		opts                 *clickConn.Options
+		root                 driver.Conn
+		connConstructor      func(opt *clickConn.Options) (driver.Conn, error)
+		injectLabelForConfig string
 	}
 	config struct {
-		user              string
-		password          string
-		containerImage    string
-		imageEnvValue     string
-		migrator          Migrator
-		fs                afero.Fs
-		migrationsPath    string
-		injectLabel       string
-		runner            containerRunner
-		connConstructor   func(opt *clickConn.Options) (driver.Conn, error)
-		hostedDBNamespace string
-		hostedDSN         string
+		user                 string
+		password             string
+		containerImage       string
+		imageEnvValue        string
+		migrator             Migrator
+		fs                   afero.Fs
+		migrationsPath       string
+		injectLabel          string
+		runner               containerRunner
+		connConstructor      func(opt *clickConn.Options) (driver.Conn, error)
+		hostedDBNamespace    string
+		hostedDSN            string
+		injectLabelForConfig string
 	}
 
 	DB interface {
@@ -121,16 +123,23 @@ func WithHostedDBNamespace(namespace string) Option {
 	}
 }
 
+func WithInjectLabelForConfig(label string) Option {
+	return func(c *config) {
+		c.injectLabelForConfig = label
+	}
+}
+
 func New[T any](options ...Option) integration.Bootstrap[T] {
 	cfg := config{
-		user:            "",
-		password:        "",
-		containerImage:  "clickhouse/clickhouse-server:23.3.8.21-alpine",
-		imageEnvValue:   "GROAT_I9N_CH_IMAGE",
-		injectLabel:     "groat.clickhouse",
-		migrationsPath:  "../sql/migrations",
-		fs:              afero.NewOsFs(),
-		connConstructor: clickConn.Open,
+		user:                 "",
+		password:             "",
+		containerImage:       "clickhouse/clickhouse-server:23.3.8.21-alpine",
+		imageEnvValue:        "GROAT_I9N_CH_IMAGE",
+		injectLabel:          "clickhouse",
+		migrationsPath:       "../sql/migrations",
+		fs:                   afero.NewOsFs(),
+		connConstructor:      clickConn.Open,
+		injectLabelForConfig: "clickhouse.config",
 		runner: func(
 			ctx context.Context,
 			img string, opts ...testcontainers.ContainerCustomizer,

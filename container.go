@@ -32,6 +32,7 @@ func newContainer[T any](
 
 	container.connString = connString
 	container.injectLabel = cfg.injectLabel
+	container.injectLabelForConfig = cfg.injectLabelForConfig
 
 	container.opts, err = clickhouse.ParseDSN(connString)
 	if err != nil {
@@ -79,6 +80,7 @@ func (c *Container[T]) Injector(t *testing.T, to T) T {
 	})
 	require.NoError(t, err)
 	res := generics.Injector(t, &Connect{con}, to, c.injectLabel)
+	res = generics.Injector(t, cfg, res, c.injectLabelForConfig)
 
 	return res
 }
