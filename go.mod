@@ -3,7 +3,7 @@ module github.com/godepo/groclick
 go 1.24.2
 
 require (
-	github.com/ClickHouse/clickhouse-go/v2 v2.37.1
+	github.com/ClickHouse/clickhouse-go/v2 v2.37.2
 	github.com/godepo/groat v0.0.1
 	github.com/google/uuid v1.6.0
 	github.com/spf13/afero v1.11.0
@@ -15,7 +15,7 @@ require (
 require (
 	dario.cat/mergo v1.0.1 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20250102033503-faa5f7b0171c // indirect
-	github.com/ClickHouse/ch-go v0.66.0 // indirect
+	github.com/ClickHouse/ch-go v0.66.1 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/brunoga/deep v1.2.4 // indirect
