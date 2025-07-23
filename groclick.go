@@ -1,4 +1,3 @@
-//go:generate go tool mockery
 package groclick
 
 import (
@@ -46,6 +45,7 @@ type (
 		root                 driver.Conn
 		connConstructor      func(opt *clickConn.Options) (driver.Conn, error)
 		injectLabelForConfig string
+		injectLabelForDSN    string
 	}
 	config struct {
 		user                 string
@@ -61,6 +61,7 @@ type (
 		hostedDBNamespace    string
 		hostedDSN            string
 		injectLabelForConfig string
+		injectLabelForDSN    string
 	}
 
 	DB interface {
@@ -129,6 +130,12 @@ func WithInjectLabelForConfig(label string) Option {
 	}
 }
 
+func WithInjectLabelForDSN(label string) Option {
+	return func(c *config) {
+		c.injectLabelForDSN = label
+	}
+}
+
 func New[T any](options ...Option) integration.Bootstrap[T] {
 	cfg := config{
 		user:                 "",
@@ -140,6 +147,7 @@ func New[T any](options ...Option) integration.Bootstrap[T] {
 		fs:                   afero.NewOsFs(),
 		connConstructor:      clickConn.Open,
 		injectLabelForConfig: "clickhouse.config",
+		injectLabelForDSN:    "clickhouse.dsn",
 		runner: func(
 			ctx context.Context,
 			img string, opts ...testcontainers.ContainerCustomizer,
