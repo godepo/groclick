@@ -18,6 +18,7 @@ type (
 	Deps struct {
 		Conn *Connect            `groat:"grohouse"`
 		Cfg  *clickhouse.Options `groat:"grocfg"`
+		DSN  string              `groat:"grodsn"`
 	}
 )
 
@@ -41,6 +42,7 @@ func TestMain(m *testing.M) {
 			WithUsername("default"),
 			WithPassword("test"),
 			WithInjectLabelForConfig("grocfg"),
+			WithInjectLabelForDSN("grodsn"),
 		),
 	)
 	os.Exit(suite.Go())
