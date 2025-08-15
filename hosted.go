@@ -102,6 +102,7 @@ func (c *hostedClickhouse[T]) Injector(t *testing.T, to T) T {
 	require.NoError(t, err)
 	res := generics.Injector(t, &Connect{con}, to, c.cfg.injectLabel)
 	res = generics.Injector(t, cfg, res, c.cfg.injectLabelForConfig)
+	res = generics.Injector(t, c.cfg.hostedDSN, res, c.cfg.injectLabelForDSN)
 
 	return res
 }
